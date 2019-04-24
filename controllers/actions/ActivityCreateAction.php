@@ -11,28 +11,44 @@ namespace app\controllers\actions;
 use app\components\ActivityComponent;
 use app\models\Activity;
 use yii\base\Action;
+use yii\bootstrap\ActiveForm;
+use yii\web\Response;
 
 class ActivityCreateAction extends Action
 {
     public $name;
-    public function run()
-        {
-            $model = \Yii::$app->activity->getModel();
 
-            /**
-             * @var ActivityComponent @comp
-             */
-            $comp=\Yii::createObject(['class'=>ActivityComponent::class, 'activity_class'=>Activity::class]);
-            if (\Yii::$app->request->isPost) {
-                $model->load(\Yii::$app->request->post());
+    /**
+     * @return string
+     * @throws \yii\base\InvalidConfigException
+     * @var ActivityComponent $component
+     */
+    public function run()
+    {
+        $model = \Yii::$app->activity->getModel();
+
+        /**
+         * @return string
+         * @throws \yii\base\InvalidConfigException
+         * @var ActivityComponent @comp
+         */
+        $comp = \Yii::createObject(['class' => ActivityComponent::class, 'activity_class' => Activity::class]);
+        if (\Yii::$app->request->isPost) {
+            $model->load(\Yii::$app->request->post());
 //            print_r($model->getAttributes());
 //                $model->title=null;
 //                if (!$model->validate()){
 ////                    print_r($model->getErrors());
 ////                }
 ////                exit;
-                if ($comp->createActivity($model));
+            if (\Yii::$app->request->isAjax) {
+                \Yii::$app->response->format = Response::FORMAT_JSON;
+                return ActiveForm::validate($model);
             }
-            return $this->controller->render('create', ['model' => $model, 'name' =>$this->name]); // в активити не было слова контроллер
+            if ($comp->createActivity($model)) {
+                return $this->controller->render('view', ['model' => $model]);
+            };
+        }
+        return $this->controller->render('create', ['model' => $model, 'name' => $this->name]); // в активити не было слова контроллер
     }
 }
