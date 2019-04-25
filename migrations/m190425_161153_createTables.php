@@ -24,6 +24,8 @@ class m190425_161153_createTables extends Migration
                 ->defaultExpression('CURRENT_TIMESTAMP')
         ]);
 
+        $this->execute('');
+
         $this->createTable('users',[
             'id'=>$this->primaryKey(),
             'email'=>$this->string(150)->notNull(),
@@ -35,8 +37,6 @@ class m190425_161153_createTables extends Migration
         ]);
 
         $this->createIndex('users_emailInd','users','email',true);
-
-
 
     }
 
