@@ -6,6 +6,7 @@ namespace app\components;
 
 use yii\base\Component;
 use yii\db\Connection;
+use yii\db\Exception;
 use yii\db\Query;
 
 class DAOComponent extends Component
@@ -53,6 +54,29 @@ class DAOComponent extends Component
         return $this->getDb()->
         createCommand($sql,[':user'=>$user_id])
             ->queryAll();
+    }
+
+    public function testInsert(){
+
+        $trans=$this->getDb()->beginTransaction();
+
+        try {
+            $this->getDb()->createCommand()
+                ->insert('activity', ['title' => 'testTile',
+                    'dateStart' => date('Y-m-d'),
+                    'user_id' => 1])
+                ->execute();
+            $id = $this->getDb()->getLastInsertID();
+//            throw new Exception('test');
+            $this->getDb()->createCommand()->update('activity',
+                ['user_id' => 2], ['id' => $id])->execute();
+
+            $trans->commit();
+        }catch (\Exception $e){
+            $trans->rollBack();
+
+        }
+
     }
 
     public function getAllUsers(){

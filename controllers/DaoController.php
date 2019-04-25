@@ -14,6 +14,8 @@ class DaoController extends BaseController
         $comp=\Yii::createObject(['class'=>DAOComponent::class,
             'connection' =>\Yii::$app->db]);
 
+        $comp->testInsert();
+
         $users=$comp->getAllUsers();
 
         $activityUser=$comp->getActivityUser(\Yii::$app->request->get('user',1));
@@ -21,6 +23,8 @@ class DaoController extends BaseController
         $activityNotification=$comp->getActivityNotification();
 
         $firstActivity=$comp->getFirstActivity();
+
+
 
         $countActivity=$comp->getCountActivity();
         return $this->render('dao',['users'=>$users,
