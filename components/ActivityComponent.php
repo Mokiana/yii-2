@@ -43,8 +43,8 @@ class ActivityComponent extends Component
 //            print_r($model->getErrors());
             return false;
         }
-        if($model->file){
 
+        if($model->file){
             $path=$this->genFilePath($this->genFileName($model->file));
             if(!$this->saveUploadedFile($model->file,$path)){
                 $model->addError('file','Не удалось сохранить файл');
@@ -53,6 +53,7 @@ class ActivityComponent extends Component
                 $model->file=basename($path);
             }
         }
+
         return true;
     }
     private function saveUploadedFile(UploadedFile $file,$path):bool{
