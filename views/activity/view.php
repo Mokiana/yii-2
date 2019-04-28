@@ -15,3 +15,4 @@
 <p><strong>Описание:</strong> <?=$model->description?></p>
 
 <p><?=\yii\helpers\Html::img('/images/'.$model->file,['width'=>200])?></p>
+<!--<p>\yii\helpers\Html::img('/images/'.$model->files,['width'=>200])</p>-->

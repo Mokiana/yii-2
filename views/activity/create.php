@@ -29,6 +29,7 @@ use yii\helpers\Html;
 <!--        $form->field($model, 'description')->textarea(['data-attr' => 2])-->
         <?= $form->field($model, 'description')->textarea(['row' => '3']); ?>
         <?= $form->field($model, 'dateStart')->input('date'); ?>
+        <?= $form->field($model, 'dateEnd')->input('date'); ?>
         <?=$form->field($model,'useNotification')->checkbox();?>
         <?=$form->field($model,'email',
             ['enableClientValidation'=>false,
@@ -42,6 +43,7 @@ use yii\helpers\Html;
         <?=$form->field($model,'repeatInterval')->input('number',['value'=>'0']);?>
 
         <?=$form->field($model,'file')->fileInput()?>
+        <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true]) ?>
         <div class="form-group">
             <button class="btn btn-default" type="submit">Создать</button>
         </div>

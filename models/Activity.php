@@ -16,6 +16,7 @@ class Activity extends Model
     public $title;
     public $description;
     public $dateStart;
+    public $dateEnd;
     public $useNotification;
     public $email;
 //    public $emailRepeat;
@@ -24,6 +25,7 @@ class Activity extends Model
     public $repeatCount;
     public $repeatInterval;
     public $file;
+    public $imageFiles;
 
     private $repeatCountList=[0=>'Не повторять',1=>'Один раз',2=>'Два раза',3=>'Три раза',4=>'Четыре раза',5=>'Пять раз'];
 
@@ -47,6 +49,7 @@ class Activity extends Model
 //            ['description','match','pattern' => '/[a-z]{1,}/iu'],
             ['description', 'string', 'min' => 10],
             ['dateStart', 'date', 'format' => 'php:Y-m-d'],
+            ['dateEnd', 'date', 'format' => 'php:Y-m-d'],
             [['isBlocked','useNotification'],'boolean'],
             ['email','email','message' => 'Указан неправильный адрес'],
 //            ['emailRepeat','compare','compareAttribute'=>'email'],
@@ -54,6 +57,7 @@ class Activity extends Model
                 return $model->useNotification==1;
             }],
             ['file','file','extensions' => ['jpg','png','jpeg','gif']],
+            [['imageFiles'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 4],
 //            ['title','stopTitle'],
             [['title'],StopTitleValidator::class,'letters' => [1,2]],
 //            ['repeatCount','number','integerOnly' => true,'min' => 0],
@@ -72,6 +76,7 @@ class Activity extends Model
             'title'=>'Заголовок',
             'description'=>'Описание',
             'dateStart'=>'Дата начала',
+            'dateEnd'=>'Дата окончания',
             'isBlocked'=>'Блокирующее событие',
 //            'repeat'=>'Повторение',
             'useNotification'=>'Уведомление на почту (обязательно указать адрес почты)',
@@ -79,6 +84,7 @@ class Activity extends Model
             'repeatCount'=>'Количество повторений',
             'repeatInterval'=>'Интервал повторений, дн',
             'file'=>'Выберите файл, разрешенные расширения jpg,png,jpeg,gif',
+            'imageFiles'=>'Выберите несколько файлов, разрешенные расширения jpg,png,jpeg,gif',
         ];
     }
 }

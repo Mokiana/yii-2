@@ -79,4 +79,30 @@ class ActivityComponent extends Component
         $file=UploadedFile::getInstance($model,$attr);
         return $file;
     }
+
+    public function actionUpload()
+    {
+        $model = new Activity();
+
+        if (Yii::$app->request->isPost) {
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+            if ($model->upload()) {
+                return;
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            foreach ($this->imageFiles as $files) {
+                $files->saveAs('uploads/' . $files->baseName . '.' . $files->extension);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
