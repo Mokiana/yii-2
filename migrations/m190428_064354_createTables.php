@@ -17,7 +17,7 @@ class m190428_064354_createTables extends Migration
             'title' => $this->string(150)->notNull(),
             'description' => $this->text(),
             'dateStart' => $this->date()->notNull(),
-            'dateEnd' => $this->date()->notNull(),
+            'dateEnd' => $this->date(),
             'useNotification' => $this->tinyInteger()->notNull()->defaultValue(0),
             'email' => $this->string(150),
             'isBlocked' => $this->tinyInteger()->notNull()->defaultValue(0),

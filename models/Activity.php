@@ -11,19 +11,19 @@ namespace app\models;
 use app\models\rules\StopTitleValidator;
 use yii\base\Model;
 
-class Activity extends Model
+class Activity extends ActivityBase
 {
-    public $title;
-    public $description;
-    public $dateStart;
-    public $dateEnd;
-    public $useNotification;
-    public $email;
+//    public $title;
+//    public $description;
+//    public $dateStart;
+//    public $dateEnd;
+//    public $useNotification;
+//    public $email;
 //    public $emailRepeat;
-    public $isBlocked;
+//    public $isBlocked;
 //    public $repeat;
     public $repeatCount;
-    public $repeatInterval;
+//    public $repeatInterval;
     public $file;
     public $imageFiles;
 
@@ -43,7 +43,7 @@ class Activity extends Model
         return parent::beforeValidate();
     }
     public function rules() {
-        return [
+        return array_merge([
             ['title', 'required'],
             ['title','trim'],
 //            ['description','match','pattern' => '/[a-z]{1,}/iu'],
@@ -63,7 +63,7 @@ class Activity extends Model
 //            ['repeatCount','number','integerOnly' => true,'min' => 0],
             ['repeatCount','in','range' => array_keys($this->repeatCountList)],
             ['repeatInterval','number','integerOnly' => true,'min' => 0],
-        ];
+        ],parent::rules());
     }
 
 //    public function stopTitle($attr){

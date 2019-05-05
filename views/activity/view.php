@@ -16,3 +16,11 @@
 
 <p><?=\yii\helpers\Html::img('/images/'.$model->file,['width'=>200])?></p>
 <!--<p>\yii\helpers\Html::img('/images/'.$model->files,['width'=>200])</p>-->
+<p><img width="200" src="/images/<?=$model->filename[0]?>"> </p>
+<div class="row">
+    <div class="col-md-6">
+        <pre>
+            <?=print_r($model->getAttributes())?>
+        </pre>
+    </div>
+</div>

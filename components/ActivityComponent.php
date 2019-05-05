@@ -38,8 +38,11 @@ class ActivityComponent extends Component
      */
     public function createActivity(&$model):bool{
         $model->file=$this->getUploadedFile($model,'file');
+        $model->user_id=\Yii::$app->user->id;
 
-        if (!$model->validate()){
+
+//        if (!$model->validate()){
+        if (!$model->save()){
 //            print_r($model->getErrors());
             return false;
         }
@@ -98,7 +101,7 @@ class ActivityComponent extends Component
     {
         if ($this->validate()) {
             foreach ($this->imageFiles as $files) {
-                $files->saveAs('uploads/' . $files->baseName . '.' . $files->extension);
+                $files->saveAs('images/' . $files->baseName . '.' . $files->extension);
             }
             return true;
         } else {

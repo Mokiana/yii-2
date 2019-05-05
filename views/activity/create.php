@@ -43,7 +43,7 @@ use yii\helpers\Html;
         <?=$form->field($model,'repeatInterval')->input('number',['value'=>'0']);?>
 
         <?=$form->field($model,'file')->fileInput()?>
-        <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true]) ?>
+        <?= $form->field($model, 'imageFiles')->fileInput(['multiple' => true]) ?>
         <div class="form-group">
             <button class="btn btn-default" type="submit">Создать</button>
         </div>

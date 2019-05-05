@@ -17,7 +17,7 @@ class m190428_085635_baseInsert extends Migration
             'name'=>'test1',
             'login'=>'test1_1',
             'email'=>'test@test.ru',
-            'password_hash'=>'qwerqwer',
+            'password_hash'=>'123456',
         ]);
 
         $this->insert('users',[
@@ -25,7 +25,7 @@ class m190428_085635_baseInsert extends Migration
             'name'=>'test2',
             'login'=>'test2_2',
             'email'=>'test1@test.ru',
-            'password_hash'=>'qwerqwer',
+            'password_hash'=>'123456',
         ]);
 
         $this->batchInsert('activity',[
