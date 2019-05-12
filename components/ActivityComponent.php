@@ -9,6 +9,7 @@
 namespace app\components;
 
 
+use app\behaviors\LoggerBehavior;
 use app\models\Activity;
 use yii\base\Component;
 use yii\helpers\FileHelper;
@@ -18,11 +19,21 @@ class ActivityComponent extends Component
 {
     public $activity_class;
 
+    const EVENT_CREATED_ACTIVITY='created_activity';
+
+    public function behaviors()
+    {
+        return [
+            LoggerBehavior::class
+        ];
+    }
+
     public function init(){
         parent::init();
         if(empty($this->activity_class)){
             throw new \Exception('Need activity_class param');
         }
+        $this->trigger(self::EVENT_CREATED_ACTIVITY);
     }
 
     /**

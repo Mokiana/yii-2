@@ -22,4 +22,7 @@ class Day extends Model
             'weekend'=>'Выходной',
          ];
     }
+
+
 }
+

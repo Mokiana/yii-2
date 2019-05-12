@@ -11,6 +11,7 @@ namespace app\controllers;
 use app\controllers\actions\ActivityCreateAction;
 use app\base\BaseController;
 use app\models\Activity;
+use app\models\ActivitySearch;
 use yii\web\HttpException;
 
 class ActivityController extends BaseController
@@ -48,5 +49,12 @@ class ActivityController extends BaseController
         }
 
         return $this->render('view',['model'=>$model]);
+    }
+
+    public function actionIndex(){
+
+        $model=new ActivitySearch();
+        $provider=$model->search(\Yii::$app->request->getQueryParams());
+        return $this->render('index',['model'=>$model,'provider'=>$provider]);
     }
 }

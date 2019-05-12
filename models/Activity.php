@@ -8,6 +8,8 @@
 
 namespace app\models;
 
+use app\behaviors\DateCreatedBehavior;
+use app\behaviors\LoggerBehavior;
 use app\models\rules\StopTitleValidator;
 use yii\base\Model;
 
@@ -28,7 +30,13 @@ class Activity extends ActivityBase
     public $imageFiles;
 
     private $repeatCountList=[0=>'Не повторять',1=>'Один раз',2=>'Два раза',3=>'Три раза',4=>'Четыре раза',5=>'Пять раз'];
-
+    public function behaviors()
+    {
+        return [
+            ['class'=>DateCreatedBehavior::class,'date_created_attribute' => 'date_created'],
+            LoggerBehavior::class
+        ];
+    }
     public function getRepeatCountList(){
         return $this->repeatCountList;
     }
