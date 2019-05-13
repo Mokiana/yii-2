@@ -8,9 +8,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=MyCalendar',
+    'dsn' => 'mysql:host=95.183.8.118;dbname=zavyalov',
     'username' => 'root',
-    'password' => 'vagrant',
+    'password' => '112358njkz_',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
