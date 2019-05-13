@@ -12,6 +12,7 @@
 
 ?>
 
+<?php if($this->beginCache('page1',['duration'=>15])):?>
 <?=\yii\grid\GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
@@ -47,3 +48,5 @@
         ]
     ]
 ]);?>
+<?php $this->endCache();?>
+<?php endif;?>
