@@ -119,4 +119,17 @@ class ActivityComponent extends Component
             return false;
         }
     }
+
+    /**
+     * @param string $from
+     * @return Activity[]|array|\yii\db\ActiveRecord[]
+     */
+    public function getActivityWithNotification(string $from){
+        $activities=$this->getModel()::find()->andWhere(['useNotification'=>1])
+            ->andWhere('dateStart<=:date2',[':date2' => $from.' 23:59:59'])
+            ->andWhere('dateStart>=:date',[':date' => $from])
+            ->all();
+
+        return $activities;
+    }
 }
