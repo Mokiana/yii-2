@@ -19,7 +19,7 @@ class ActivityComponent extends Component
 {
     public $activity_class;
 
-    const EVENT_CREATED_ACTIVITY='created_activity';
+    const EVENT_CREATED_ACTIVITY = 'created_activity';
 
     public function behaviors()
     {
@@ -28,9 +28,10 @@ class ActivityComponent extends Component
         ];
     }
 
-    public function init(){
+    public function init()
+    {
         parent::init();
-        if(empty($this->activity_class)){
+        if (empty($this->activity_class)) {
             throw new \Exception('Need activity_class param');
         }
         $this->trigger(self::EVENT_CREATED_ACTIVITY);
@@ -39,7 +40,8 @@ class ActivityComponent extends Component
     /**
      * @return Activity
      */
-    public function getModel(){
+    public function getModel()
+    {
         return new $this->activity_class;
     }
 
@@ -47,40 +49,45 @@ class ActivityComponent extends Component
      * @param $model Activity
      * @return bool
      */
-    public function createActivity(&$model):bool{
-        $model->file=$this->getUploadedFile($model,'file');
-        $model->user_id=\Yii::$app->user->id;
+    public function createActivity(&$model): bool
+    {
+        $model->file = $this->getUploadedFile($model, 'file');
+        $model->user_id = \Yii::$app->user->id;
 
 
 //        if (!$model->validate()){
-        if (!$model->save()){
+        if (!$model->save()) {
 //            print_r($model->getErrors());
             return false;
         }
-        if($model->file){
+        if ($model->file) {
 
-            $path=$this->genFilePath($this->genFileName($model->file));
-            if(!$this->saveUploadedFile($model->file,$path)){
-                $model->addError('file','Не удалось сохранить файл');
+            $path = $this->genFilePath($this->genFileName($model->file));
+            if (!$this->saveUploadedFile($model->file, $path)) {
+                $model->addError('file', 'Не удалось сохранить файл');
                 return false;
-            }else{
-                $model->file=basename($path);
+            } else {
+                $model->file = basename($path);
             }
         }
         return true;
     }
-    private function saveUploadedFile(UploadedFile $file,$path):bool{
+
+    private function saveUploadedFile(UploadedFile $file, $path): bool
+    {
         return $file->saveAs($path);
     }
 
-    private function genFileName(UploadedFile $file){
-        $file=uniqid().'.'.$file->getExtension();
+    private function genFileName(UploadedFile $file)
+    {
+        $file = uniqid() . '.' . $file->getExtension();
         return $file;
     }
 
-    private function genFilePath($file_name){
+    private function genFilePath($file_name)
+    {
         FileHelper::createDirectory(\Yii::getAlias('@webroot/images'));
-        $path=\Yii::getAlias('@webroot/images/'.$file_name);
+        $path = \Yii::getAlias('@webroot/images/' . $file_name);
         return $path;
     }
 
@@ -89,8 +96,9 @@ class ActivityComponent extends Component
      * @param $attr
      * @return UploadedFile|null
      */
-    private function getUploadedFile(Activity $model,$attr){
-        $file=UploadedFile::getInstance($model,$attr);
+    private function getUploadedFile(Activity $model, $attr)
+    {
+        $file = UploadedFile::getInstance($model, $attr);
         return $file;
     }
 
@@ -118,5 +126,20 @@ class ActivityComponent extends Component
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param string $from
+     * @return Activity[]|array|\yii\db\ActiveRecord[]
+     */
+
+    public function getActivityWithNotification(string $from)
+    {
+        $activities = $this->getModel()::find()->andWhere(['useNotification' => 1])
+            ->andWhere('dateStart<=:date2',[':date2'=>$from.' 23:59:59'])
+            ->andWhere('dateStart>=:date',[':date' => $from])
+            ->all();
+
+        return $activities;
     }
 }

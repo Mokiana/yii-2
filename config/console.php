@@ -16,11 +16,25 @@ $config = [
         '@tests' => '@app/tests',
     ],
     'components' => [
+        'activity' => ['class'=>\app\components\ActivityComponent::class, 'activity_class' => 'app\models\Activity'],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
         'authManager'=>[
             'class'=>'\yii\rbac\DbManager',
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'enableSwiftMailerLogging' => true,
+            'transport' => [
+                'class'=>'Swift_SmtpTransport',
+                'host'=>'smtp.yandex.ru',
+                'username'=>'geekbrains@onedeveloper.ru',
+                'password'=>'112358njkz',
+                'port'=>'587', //по умолчанию
+                'encryption'=>'tls'
+            ]
+
         ],
         'log' => [
             'targets' => [
