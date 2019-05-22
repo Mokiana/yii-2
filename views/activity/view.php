@@ -17,6 +17,7 @@
 
 <div class="row">
     <div class="col-md-6">
+        <?=app\widgets\activitytable\ActivityTableWidget::widget()?>
         <pre>
             <?=print_r($model->getAttributes())?>
         </pre>

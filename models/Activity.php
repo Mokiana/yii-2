@@ -29,49 +29,55 @@ class Activity extends ActivityBase
     public $file;
     public $imageFiles;
 
-    private $repeatCountList=[0=>'Не повторять',1=>'Один раз',2=>'Два раза',3=>'Три раза',4=>'Четыре раза',5=>'Пять раз'];
+    private $repeatCountList = [0 => 'Не повторять', 1 => 'Один раз', 2 => 'Два раза', 3 => 'Три раза', 4 => 'Четыре раза', 5 => 'Пять раз'];
+
     public function behaviors()
     {
         return [
-            ['class'=>DateCreatedBehavior::class,'date_created_attribute' => 'date_created'],
+            ['class' => DateCreatedBehavior::class, 'date_created_attribute' => 'date_created'],
             LoggerBehavior::class
         ];
     }
-    public function getRepeatCountList(){
+
+    public function getRepeatCountList()
+    {
         return $this->repeatCountList;
     }
+
     public function beforeValidate()
     {
-        if(!empty($this->dateStart)){
-            $date=\DateTime::createFromFormat('d.m.Y',$this->dateStart);
-            if($date){
-                $this->dateStart=$date->format('Y-m-d');
+        if (!empty($this->dateStart)) {
+            $date = \DateTime::createFromFormat('d.m.Y', $this->dateStart);
+            if ($date) {
+                $this->dateStart = $date->format('Y-m-d');
             }
         }
         return parent::beforeValidate();
     }
-    public function rules() {
+
+    public function rules()
+    {
         return array_merge([
             ['title', 'required'],
-            ['title','trim'],
+            ['title', 'trim'],
 //            ['description','match','pattern' => '/[a-z]{1,}/iu'],
             ['description', 'string', 'min' => 10],
             ['dateStart', 'date', 'format' => 'php:Y-m-d'],
             ['dateEnd', 'date', 'format' => 'php:Y-m-d'],
-            [['isBlocked','useNotification'],'boolean'],
-            ['email','email','message' => 'Указан неправильный адрес'],
+            [['isBlocked', 'useNotification'], 'boolean'],
+            ['email', 'email', 'message' => 'Указан неправильный адрес'],
 //            ['emailRepeat','compare','compareAttribute'=>'email'],
-            ['email','required','when' => function($model){
-                return $model->useNotification==1;
+            ['email', 'required', 'when' => function ($model) {
+                return $model->useNotification == 1;
             }],
-            ['file','file','extensions' => ['jpg','png','jpeg','gif']],
+            ['file', 'file', 'extensions' => ['jpg', 'png', 'jpeg', 'gif']],
             [['imageFiles'], 'file', 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 4],
 //            ['title','stopTitle'],
-            [['title'],StopTitleValidator::class,'letters' => [1,2]],
+            [['title'], StopTitleValidator::class, 'letters' => [1, 2]],
 //            ['repeatCount','number','integerOnly' => true,'min' => 0],
-            ['repeatCount','in','range' => array_keys($this->repeatCountList)],
-            ['repeatInterval','number','integerOnly' => true,'min' => 0],
-        ],parent::rules());
+            ['repeatCount', 'in', 'range' => array_keys($this->repeatCountList)],
+            ['repeatInterval', 'number', 'integerOnly' => true, 'min' => 0],
+        ], parent::rules());
     }
 
 //    public function stopTitle($attr){
@@ -79,20 +85,39 @@ class Activity extends ActivityBase
 //            $this->addError('title','Выберите другой заголовок');
 //        }
 //    }
-    public function attributeLabels() {
+//    public function attributeLabels()
+//    {
+//        return [
+//            'title' => 'Заголовок',
+//            'description' => 'Описание',
+//            'dateStart' => 'Дата начала',
+//            'dateEnd' => 'Дата окончания',
+//            'isBlocked' => 'Блокирующее событие',
+////            'repeat'=>'Повторение',
+//            'useNotification' => 'Уведомление на почту (обязательно указать адрес почты)',
+//            'email' => 'Адрес почты для отправки уведомлений',
+//            'repeatCount' => 'Количество повторений',
+//            'repeatInterval' => 'Интервал повторений, дн',
+//            'file' => 'Выберите файл, разрешенные расширения jpg,png,jpeg,gif',
+//            'imageFiles' => 'Выберите несколько файлов, разрешенные расширения jpg,png,jpeg,gif',
+//        ];
+//    }
+
+    public function fields()
+    {
         return [
-            'title'=>'Заголовок',
-            'description'=>'Описание',
-            'dateStart'=>'Дата начала',
-            'dateEnd'=>'Дата окончания',
-            'isBlocked'=>'Блокирующее событие',
-//            'repeat'=>'Повторение',
-            'useNotification'=>'Уведомление на почту (обязательно указать адрес почты)',
-            'email'=>'Адрес почты для отправки уведомлений',
-            'repeatCount'=>'Количество повторений',
-            'repeatInterval'=>'Интервал повторений, дн',
-            'file'=>'Выберите файл, разрешенные расширения jpg,png,jpeg,gif',
-            'imageFiles'=>'Выберите несколько файлов, разрешенные расширения jpg,png,jpeg,gif',
+            'id', 'title', 'dateStart' => function ($model) {
+                return \Yii::$app->formatter->asDate($model->dateStart, 'php:d.m.Y');
+            }
+        ];
+    }
+
+    public function extraFields()
+    {
+        return [
+            'user' => function ($model) {
+                return $model->user->email;
+            }
         ];
     }
 }

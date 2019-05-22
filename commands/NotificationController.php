@@ -9,6 +9,7 @@
 namespace app\commands;
 
 
+use app\components\Notification;
 use app\components\NotificationComponent;
 use yii\console\Controller;
 
@@ -57,12 +58,17 @@ class NotificationController extends Controller
             echo 'Activities for notification not found'.PHP_EOL;
             \Yii::$app->end();
         }
+//        /**
+//         * @var NotificationComponent $notifComp
+//         */
+
         /**
-         * @var NotificationComponent $notifComp
+         * @var Notification $notifComp
          */
 //        echo count($activities);
-        $notifComp=\Yii::createObject(['class'=>NotificationComponent::class,
-            'mailer'=> \Yii::$app->mailer]);
+//        $notifComp=\Yii::createObject(['class'=>NotificationComponent::class,
+//            'mailer'=> \Yii::$app->mailer]);
+        $notifComp=\Yii::$container->get(Notification::class);
 
         $notifComp->sendActivityInfo($activities);
 //        echo $this->first . PHP_EOL;;

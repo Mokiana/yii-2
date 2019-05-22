@@ -15,9 +15,9 @@ class BaseController extends Controller
 {
     public function beforeAction($action)
     {
-
-        if(\Yii::$app->user->isGuest){
-            throw new HttpException(401,'Need authorization');
+        \Yii::$app->language = \Yii::$app->session->get('lang', 'ru-RU');
+        if (\Yii::$app->user->isGuest) {
+            throw new HttpException(401, 'Need authorization');
         }
 
         return parent::beforeAction($action);
@@ -31,7 +31,7 @@ class BaseController extends Controller
     public function afterAction($action, $result)
     {
         $page = \Yii::$app->request->url;
-        \Yii::$app->session->set('page_url',$page);
+        \Yii::$app->session->set('page_url', $page);
 
         return parent::afterAction($action, $result);
     }

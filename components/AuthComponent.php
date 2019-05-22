@@ -72,8 +72,4 @@ class AuthComponent extends Component
         return \Yii::$app->security->generateRandomString();
     }
 
-    private function hashPassword($password)
-    {
-        return \Yii::$app->security->generatePasswordHash($password);
-    }
 }

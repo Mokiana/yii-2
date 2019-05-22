@@ -2,40 +2,44 @@
 
 $params = require __DIR__ . '/params.php';
 $db = file_exists(__DIR__ . '/db_local.php')
-    ?(require __DIR__ . '/db_local.php')
-    :(require __DIR__ . '/db.php');
+    ? (require __DIR__ . '/db_local.php')
+    : (require __DIR__ . '/db.php');
 
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'language'=>'ru-RU',
-    'as logit'=>['class'=>\app\behaviors\LoggerBehavior::class],
+    'language' => 'ru-RU',
+    'as logit' => ['class' => \app\behaviors\LoggerBehavior::class],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
         '@my' => '/home/my',
         '@new' => '@my/new/create'
     ],
     'components' => [
-        'authManager'=>[
-            'class'=>'\yii\rbac\DbManager',
+        'authManager' => [
+            'class' => '\yii\rbac\DbManager',
         ],
-        'rbac'=>['class'=>\app\components\RbacComponent::class],
-        'activity' => ['class'=>\app\components\ActivityComponent::class, 'activity_class' => 'app\models\Activity'],
-        'day' => ['class'=>\app\components\DayComponent::class, 'day_class' => 'app\models\Day'],
+        'rbac' => ['class' => \app\components\RbacComponent::class],
+        'activity' => ['class' => \app\components\ActivityComponent::class, 'activity_class' => 'app\models\Activity'],
+        'day' => ['class' => \app\components\DayComponent::class, 'day_class' => 'app\models\Day'],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '8JpyQMkx15bLEaXx9i5OEo77AqikvFlB',
+            'parsers' => [
+                'application/json' => 'yii/web/JsonParser'
+            ]
         ],
         'cache' => [
 //            'class' => 'yii\caching\MemCache',
 //            'useMemcached' => true
-        'class' => 'yii\caching\FileCache'
+            'class' => 'yii\caching\FileCache'
         ],
         'user' => [
             'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
+//            'enableSession' => false
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -56,12 +60,30 @@ $config = [
                 ],
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'fileMap'=>[
+                        'app'=>'app.php',
+                        'app/error'=>'error'
+                    ]
+                ]
+            ]
+        ],
         'db' => $db,
 
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'new' => 'activity/create',
+                'create' => 'activity/create',
+                'events/<action>' => 'activity/<action>',
+                'events/<action>/<id:\w+>' => 'activity/<action>', //регуляное значение, может даже от 1 до 3 и т п
+                ['class' => \yii\rest\UrlRule::class, 'controller' => 'rest',
+                    'pluralize' => false]
+//                '<controller>/add'=>'cont/add'
             ],
         ],
 

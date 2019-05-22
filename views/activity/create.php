@@ -14,7 +14,11 @@ use yii\helpers\Html;
 ?>
 <div class="row">
     <div class="col-md-12">
-        <h3>Добавить событие</h3>
+<!--        <h3>Добавить событие</h3>-->
+        <h3><?=Yii::t('app', 'Create Activity')?></h3>
+
+        <h4><?=Yii::t('app', 'for {user}', ['user'=>Yii::$app->user->id])?></h4>
+        <?=Yii::t('app', 'date', [time()]);?>
         <!--        <p>--><? //=$name;?><!--</p>-->
         <!--        <p>--><? //=Yii::getAlias('@app');?><!--</p>-->
         <!--        <p>--><? //=Yii::getAlias('@app'.DIRECTORY_SEPARATOR.'files');?><!--</p>-->
